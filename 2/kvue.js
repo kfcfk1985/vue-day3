@@ -1,47 +1,83 @@
-class Kvue {
+// new KVue({data:{...}})
+
+class KVue {
     constructor(options) {
-        console.log(`constructor`)
-
-        this.$data = options.data;
-
-        //为 this.$data 中的每一个值设定一个 set 和 get 
-        this.observe(this.$data)
+      this.$options = options;
+  
+      // 数据响应化
+      this.$data = options.data;
+      this.observe(this.$data);
+  
+      // 模拟一下watcher创建
+      new Watcher();
+      // 通过访问test属性触发get函数，添加依赖
+      this.$data.test;
+  
 
     }
-
-    observe(obj) {
-        // console.log(`observe`,obj,typeof obj)
-        if (!obj || typeof obj != 'object') {
-            return 
+  
+    observe(value) {
+      if (!value || typeof value !== "object") {
+        return;
+      }
+  
+      // 遍历该对象
+      Object.keys(value).forEach(key => {
+        this.defineReactive(value, key, value[key]);
+      
+      });
+    }
+  
+    // 数据响应化
+    defineReactive(obj, key, val) {
+      this.observe(val); // 递归解决数据嵌套
+  
+      const dep = new Dep();
+  
+      Object.defineProperty(obj, key, {
+        get() {
+          Dep.target && dep.addDep(Dep.target);
+          return val;
+        },
+        set(newVal) {
+          if (newVal === val) {
+            return;
+          }
+          val = newVal;
+          // console.log(`${key}属性更新了：${val}`);
+          dep.notify();
         }
-
-        //  Object.keys() 获取自身（不含继承的）的可枚举的属性值（不含Symbol的）
-        Object.keys(obj).forEach(key => {
-            this.defineReative(obj, key, obj[key])
-        })
-
+      });
     }
-
-    defineReative(obj, key, value) {
-        // console.log(`defineReative`)
-
-        this.observe(value) //用递归解决 value 也是对象的情况
-        Object.defineProperty(obj, key, {
-            get() {
-                return value;
-            },
-            set(newValue) {
-                if (value == newValue) {
-                    return
-                }
-
-                value = newValue;
-                console.log(`${key} 属性更新为`, newValue)
-
-                //当数据发生变化的时候，可以在这里通知需要更新的地方去更新
-            }
-        })
-
+  
+  
+  }
+  
+  // Dep：用来管理Watcher
+  class Dep {
+    constructor() {
+      // 这里存放若干依赖（watcher）
+      this.deps = [];
     }
-
-}
+  
+    addDep(dep) {
+      this.deps.push(dep);
+    }
+  
+    notify() {
+      this.deps.forEach(dep => dep.update());
+    }
+  }
+  
+  // Watcher
+  class Watcher {
+    constructor() {
+      // 将当前watcher实例指定到Dep静态属性target
+      Dep.target = this;
+    }
+  
+    update() {
+      console.log("属性更新了，要更新视图了");
+  
+    }
+  }

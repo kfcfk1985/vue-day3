@@ -12,19 +12,16 @@
 <body>
     <script src="kvue.js"></script>
     <script>
-        let app = new Kvue({
+        let app = new KVue({
             data: {
-                text: "I am test",
-                foo: {
-                    bar: 'bar'
-                }
+                test: "I am test"
             }
         })
 
 
-        app.$data.text = "you are test";
-        app.$data.foo.bar = "car";
-        app.$data.foo = {name:"tony"};
+        app.$data.test = "you are test";
+        // app.$data.foo.bar = "car";
+        // app.$data.foo = {name:"tony"};
     </script>
 
 </body>
