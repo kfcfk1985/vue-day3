@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    
+    <script>
+        let obj = {};
+
+        Object.defineProperty(obj, "text", {
+            get() {
+                return document.querySelector("#text").innerHTML
+            },
+            set(value) {
+                document.querySelector("#text").innerHTML = value
+            },
+        })
+
+
+        function clickCall(){
+            console.log("this is on click callBack:",obj.text)
+
+            if(!obj.text){
+                obj.text  = 0;
+            }else{
+                obj.text  = parseInt(obj.text) + 1;
+            }
+        }
+
+    </script>
+
+    <div>
+        <p id="text"></p>
+
+        <button onclick="clickCall()">点击俺</button>
+    </div>
+
+</body>
+
+</html>
