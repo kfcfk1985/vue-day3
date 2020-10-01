@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+</head>
+
+<body>
+    <div id="app">
+        <button onclick="onClick()">更改</button>
+    </div>
+
+ 
+    <script>
+        const fragment = document.createDocumentFragment();
+        const p = document.createElement("p");
+        p.appendChild(document.createTextNode("hell world "))
+       
+        fragment.appendChild(p)
+        document.querySelector('#app').appendChild(fragment)
+
+        function onClick(){
+            console.log('onClick')
+            console.log('fragment',fragment)
+            console.log('p',p)
+            p.innerHTML = "i am tony"
+        }
+    </script>
+
+</body>
+
+</html>
