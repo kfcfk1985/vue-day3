@@ -53,7 +53,7 @@ class KVue {
           return;
         }
         val = newVal;
-        // console.log(`${key}属性更新了：${val}`);
+        console.log(`${key}属性更新了：${val}`);
         dep.notify();
       }
     });
